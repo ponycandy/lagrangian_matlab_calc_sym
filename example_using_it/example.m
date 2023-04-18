@@ -28,9 +28,10 @@ tau=[F;0];
 DDq=solve_for_DDq(Eq,tau,q);
 new_func=[Dtheta,DDq.DDtheta,Dx,DDq.DDx];
 state=[theta,Dtheta,x,Dx];
-d_state=new_func;
 control=[F];
 jac_mat=solve_for_DDQ_jacobian(new_func,control,state,q);
 
-matlabFunction(d_state,'File','state_file');
+matlabFunction(state,'File','state_file');
 matlabFunction(jac_mat,'File','jac_mat_file');
+%% 打开matlab coder将上述文件转化为cpp程序
+% 加入到工程文件中，删除所有报错头文件，即可正常编译使用，例子见本目录下的工程文件，使用了Eigen::Map来赋值
